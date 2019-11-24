@@ -8,25 +8,29 @@ using pea.other;
 
 namespace pea
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             InstanceTestsDeviation(6, 132);
 
             Console.Read();
         }
-        
-        public static void InstanceTestsDeviation(int cities, int trueSolution)
+
+        private static void InstanceTestsDeviation(int cities, int trueSolution)
         {
             var graph = new Graph($"C:\\My Work\\Studies\\PWr\\PEA\\BF-DP\\Effective-Algorithms-Design\\pea_proj\\pea\\instances\\data{cities}.txt");
+            
+            Write(graph);
 
             IAlgorithmsInterface algorithm = new Bruteforce(graph) { Name = $"Brute force{cities}D" };
+            
+            Write(algorithm);
             ComputeAndSaveDeviation(algorithm, trueSolution, 10);
             
         }
 
-        public static void Write(Graph graph)
+        private static void Write(Graph graph)
         {
             for (int i = 0; i < graph.GraphSize; i++)
             {
@@ -38,21 +42,21 @@ namespace pea
             }
         }
 
-        public static void Write(IAlgorithmsInterface algorithm)
+        private static void Write(IAlgorithmsInterface algorithm)
         {
             Console.WriteLine($"{algorithm.Result.Weight}");
             foreach (var item in algorithm.Result.Path)
             {
-                Console.Write(item);
+                Console.Write(item + " ");
             }
             Console.WriteLine();
         }
 
-        private static void Write(List<int> list)
+        private static void Write(IEnumerable<int> list)
         {
             foreach (var item in list)
             {
-                Console.Write(item + " ");
+                Console.Write(item);
             }
             Console.WriteLine();
         }
@@ -71,7 +75,7 @@ namespace pea
         {
             using (StreamWriter writer = new StreamWriter(algorithm.Name + ".txt"))
             {
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     Console.WriteLine(algorithm.Name);
                     long time = MeasureTime(algorithm);
